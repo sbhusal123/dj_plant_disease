@@ -1,0 +1,11 @@
+{%if image%}
+<img src="data:image/jpeg;base64,{{image}}" />
+{%endif%}
+
+<form method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{prediction_form.as_p}}
+    <button type="submit">Predict</button>
+</form>
+
+{{prediction}}
