@@ -65,12 +65,12 @@ Contains all the functionality for prediction.
 **2. model/model_files**
 
 -   Contains pickle dumped label_list during data preparation. (label_list.pkl)
--   Contains model file. (mymoel.h5)
+-   Contains model file. (mymodel.h5)
 -   You can also replace those files but the **name and the path must be same**.
 
 **3. Name.xlsx**
 
--   Excel file from which diseases data are being populated.
+-   Excel file from which diseases data are populated populated.
 -   Must be placed **inside the root plant_disease directory**.
 
     | Name                      | Description     | Medicine      |
