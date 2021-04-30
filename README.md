@@ -85,3 +85,6 @@ Contains all the functionality for prediction.
 
 -   **Create supeuser:** `python manage.py createsuperuser`. Login at: **localhost:8000/admin**
 -   **Create database tables:** `python manage.py migrate`
+-   **Changepassword:** `python manage.py changepassword <username>`
+
+> **Note that these commands needs to be executed staying inside root project_disease directory**

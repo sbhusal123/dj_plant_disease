@@ -57,13 +57,22 @@
                                         btn-info btn-md">Predict</button>
 
                                     <!-- Solution -->
+                                    {% if disease and prediction%}
                                     <button type="button" class="btn btn-warning
                                         btn-md" data-toggle="modal"
-                                        data-target="#solutionModal">Solution</button>
+                                        data-target="#solutionModal">Details</button>
+                                    {%endif%}
+
+                                    {%if prediction and not disease%}
+                                    <p>Disease medicine data not found..</p>
+                                    {%endif%}
+
+
+
                                 </div>
                                 {% if prediction%}
                                 <p>
-                                    <b>Prediction: </b>
+                                    <b>Predicted Disease: </b>
                                     <span id="prediction_val">{{prediction}}</span>
                                 </p>
 
