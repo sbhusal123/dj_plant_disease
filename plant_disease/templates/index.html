@@ -1,11 +1,127 @@
-{%if image%}
-<img src="data:image/jpeg;base64,{{image}}" />
-{%endif%}
+{%extends 'layouts.html'%}
 
-<form method="POST" enctype="multipart/form-data">
-    {%csrf_token%}
-    {{prediction_form.as_p}}
-    <button type="submit">Predict</button>
-</form>
+{%block title%}
+<title>Login | Plant Disease Predictor</title>
+{%endblock title%}
 
-{{prediction}}
+
+{%block style%}
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #17a2b8;
+            height: 100vh;
+          }
+          #login .container #login-row #login-column #login-box {
+            margin-top: 120px;
+            max-width: 600px;
+            padding: 20px;
+            border: 1px solid #9C9C9C;
+            background-color: #EAEAEA;
+          }
+          #login .container #login-row #login-column #login-box #login-form {
+            padding: 20px;
+          }
+          #login .container #login-row #login-column #login-box #login-form #register-link {
+            margin-top: -85px;
+          }
+</style>
+{%endblock style%}
+
+
+{%block content%}
+
+<div id="login">
+
+    <div class="container mt-20">
+        <div id="login-row" class="row justify-content-center
+            align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    {%if image%}
+                    <img src="data:image/jpeg;base64,{{image}}" width="400"
+                        height="350" />
+                    {%endif%}
+                    <br/><br/>
+                            <form method="POST" enctype="multipart/form-data">
+                                {%csrf_token%}
+                                <div class="form-group">
+                                    <label for="password" class="text-info">Image:</label><br>
+                                    {{prediction_form.image}}
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" name="submit"
+                                        class="btn
+                                        btn-info btn-md">Predict</button>
+
+                                    <!-- Solution -->
+                                    <button type="button" class="btn btn-warning
+                                        btn-md" data-toggle="modal"
+                                        data-target="#solutionModal">Solution</button>
+                                </div>
+                                {% if prediction%}
+                                <p>
+                                    <b>Prediction: </b>
+                                    <span id="prediction_val">{{prediction}}</span>
+                                </p>
+
+                                {%endif%}
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOlution Modal Block -->
+        <div class="modal fade" id="solutionModal" tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Treatment
+                            for {{prediction}}</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="password" class="text-info">Disease
+                                Description</label><br>
+                            <p>Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s, when an unknown printer took a galley
+                                of type and scrambled it to make a type specimen
+                                book. It has survived not only five centuries,
+                                but also the leap into electronic typesetting,
+                                remaining essentially unchanged. </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="text-info">Medicine</label><br>
+                            <p>Lorem Ipsum is simply dummy text of the printing
+                                and typesetting industry. Lorem Ipsum has been
+                                the industry's standard dummy text ever since
+                                the 1500s, when an unknown printer took a galley
+                                of type and scrambled it to make a type specimen
+                                book. It has survived not only five centuries,
+                                but also the leap into electronic typesetting,
+                                remaining essentially unchanged. </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {%endblock%}

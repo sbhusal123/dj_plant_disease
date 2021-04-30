@@ -1,7 +1,15 @@
 import os
+
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+
 from django.views.generic import TemplateView
-from django.shortcuts import render
-from .forms import PredictionForm
+from django.shortcuts import render,redirect, reverse
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
+
+from .forms import PredictionForm, LoginForm, SignUpForm
 
 from model.predict import predict_disease
 
@@ -9,6 +17,67 @@ import io
 import base64
 from base64 import decodestring
 from PIL import Image
+
+
+class UserRegistrationView(TemplateView):
+    template_name = "register.html"
+
+    def get(self, request, *args, **kwargs):
+        """Redirect to predict if logged in"""
+        if request.user.is_authenticated:
+            return redirect('/predict')
+        return super(UserRegistrationView, self).get(request, *args, **kwargs)    
+
+    def get_context_data(self, **kwargs):
+        cxt = super().get_context_data(**kwargs)
+        cxt['form'] = SignUpForm()
+        return cxt
+
+    def post(self, request):
+        msg = None
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            msg = "User Created"
+        return render(request, self.template_name, {"form": form, "msg" : msg})
+
+class LoginView(TemplateView):
+    template_name = "login.html"
+
+    def get(self, request, *args, **kwargs):
+        """Redirect to predict if logged in"""
+        if request.user.is_authenticated:
+            return redirect('/predict')
+        return super(LoginView, self).get(request, *args, **kwargs)
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+
+
+            user = None
+            try:
+                user = User.objects.get(username=username)
+            except User.DoesNotExist:
+                pass
+
+            if user is not None and user.check_password(password):
+                # Check if email is verified or not
+                if user.is_active:
+                    login(request, user)
+                    return redirect("/predict")
+                else:
+                    msg = "Users banned."
+            else:    
+                msg = 'Invalid credentials'
+
+        else:
+            msg = 'Error validating the form'
+
+        return render(request, self.template_name, {"form": form, "msg" : msg})
+
 
 
 
@@ -65,3 +134,6 @@ class PredictView(TemplateView):
 
         return render(request, "index.html", cxt)
 
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super(PredictView, self).dispatch(*args, **kwargs)
