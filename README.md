@@ -51,7 +51,7 @@ Quit the server with CONTROL-C.
 │   |    ├── index.html (prediction frontend)
 │   |    ├── login.html
 │   |    ├── register.html
-|   └── <Name>.xlsx (disease data excel file)
+|   └── Name.xlsx (disease data excel file)
 |   └── manage.py
 |   └── db.sqlite3 (database file can be deleted)
 ├── requirements.txt
@@ -68,7 +68,7 @@ Contains all the functionality for prediction.
 -   Contains model file. (mymoel.h5)
 -   You can also replace those files but the **name and the path must be same**.
 
-**3. <Name>.xlsx**
+**3. Name.xlsx**
 
 -   Excel file from which diseases data are being populated.
 -   Must be placed **inside the root plant_disease directory**.
