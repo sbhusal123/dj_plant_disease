@@ -10,13 +10,14 @@ from django.contrib.auth.decorators import login_required
 
 
 from .forms import PredictionForm, LoginForm, SignUpForm
-
-from model.predict import predict_disease
+from .models import Disease
 
 import io
 import base64
 from base64 import decodestring
 from PIL import Image
+
+from model.predict import predict_disease
 
 
 class UserRegistrationView(TemplateView):
@@ -123,8 +124,14 @@ class PredictView(TemplateView):
         if prediction_form.is_valid():
             image = prediction_form.cleaned_data['image']
             
+            # Get predicted disease
             prediction, template_image = self.get_uploaded_image_and_predict(image)
 
+            try:
+                disease = Disease.objects.get(name=prediction)
+                cxt['disease'] = disease
+            except Exception as e:
+                print(e)
             
             cxt['prediction_form'] = PredictionForm(None)
             cxt['prediction'] = prediction
